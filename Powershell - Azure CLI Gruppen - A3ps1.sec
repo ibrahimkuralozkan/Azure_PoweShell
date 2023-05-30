@@ -1,0 +1,13 @@
+$groupname = "myGroup"
+$location = "westeurope"
+
+$currentDate = Get-Date -Format "dd.MM.yyyy"
+
+$randomString = Get-Random -Minimum 100 -Maximum 1000
+
+$fullname = $groupname + $randomString
+
+$tag = "Datum="+ $currentDate
+
+"Erzeuge Gruppe $fullname"
+az group create --name $fullname --location $location --tags $tag

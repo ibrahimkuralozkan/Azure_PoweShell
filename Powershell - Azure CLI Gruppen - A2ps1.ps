@@ -1,0 +1,24 @@
+# Gruppennamen abfragen
+$groupname = Read-Host "Bitte Namen für die neue Gruppe eingeben"
+
+# Regex
+if ($groupname -match "[^0-9a-zA-Z-]")
+{
+   "Ungültiger Gruppenname"
+}
+else
+{
+  # Prüfen ob eine Gruppe mit dem Namen schon existiert
+  $result = az group exists --name $groupname
+
+  if ($result -eq $true)
+  {
+    "Eine Gruppe mit dem Namen $groupname existiert bereits"
+  }
+  else
+  {
+    $datum = Get-Date -Format dd.MM.yy
+    $tag = "Datum=" + $datum
+    az group create --name $groupname --tags $tag
+  }
+}

@@ -1,0 +1,38 @@
+# Liste der Gruppen in ein Array
+$groups = (az group list | ConvertFrom-Json)
+
+if ($groups.Count -le 0)
+{
+	Return "Keine Gruppen"
+}
+
+# Sortieren
+$groups = $groups |Sort-Object name
+
+for ($i=0; $i -lt $groups.Count; $i++)
+{  
+  Write-Output (($i+1).ToString() + " " + $groups[$i].name)
+}
+
+try {
+  [int]$Number = Read-Host "Zahl der zu löschenden Gruppe eingeben" 
+  
+  if ($Number -gt 0 -and $Number -le $groups.Count)
+  {
+    $groupToDelete = $groups[$Number-1].name
+    
+    "Lösche $groupToDelete ..."
+    
+    # Ohne das --yes kann es zu Problem beim Ausführen aus der PowerShell ISE kommen
+    az group delete --name $groupToDelete --yes #--no-wait
+    
+    "Gruppe gelöscht"
+  }
+  else
+  {
+    "Gruppe nicht gefunden"
+  }
+}
+catch {
+ Write-Host $_
+}

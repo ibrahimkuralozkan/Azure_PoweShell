@@ -1,0 +1,66 @@
+cls
+$nachname = "Köster"
+$vorname = "Ingo"
+$zahl = 10
+
+# Aufgabe 4
+$name = $vorname + " " + $nachname
+$name
+
+# Aufgabe 5
+$eins = $zahl + $name
+$zwei = $name + $zahl
+
+$eins
+$zwei
+
+# Aufgabe 6
+for ($i=1; $i -lt 11; $i++)
+{
+ "Das Quadrat von $i ist " + $i * $i
+}
+
+# Aufgabe 7
+$outputDir = "C:\Temp"
+
+# Ordner nicht da?
+if ((Test-Path -Path $outputDir) -eq $false)
+{
+   # Dann anlegen
+   New-Item -ItemType directory -Path $outputDir
+}
+
+# Nach Dateinamen fragen
+$filename = Read-Host "Bitte Namen für die Dateien eingeben"
+
+# Wenn kein Name eingegeben wurde
+if (!$filename)
+{
+  # Namen festlegen
+  $filename = "dateiname"
+}
+
+# Dateien anlegen
+for ($i=1; $i -lt 11; $i++)
+{
+  
+  if ($i -lt 10)
+  {
+    # Mit führender Null
+    $fullFileName = $filename + "0" + $i + ".txt"
+  }
+  else
+  {
+    $fullFileName = "$filename$i.txt"
+  }
+
+  # Pfad mit Dateiname
+  $path = Join-Path -Path $outputDir -ChildPath $fullFileName
+  
+  # Dateien anlegen  
+  New-Item $path -ItemType file
+  #New-Item $path -ItemType file -WhatIf
+  
+  # Zahl in die Datei schreiben  
+  $i | out-file -filepath $path
+}
